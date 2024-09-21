@@ -246,7 +246,8 @@ const AppDownload = () => {
           padding: "20px",
           marginTop: "-20px",
           borderRadius: "10px",
-          boxShadow: "0 0 10px rgba(0, 0, 0, 0.2)",
+          boxShadow: "0 0 10px rgba(0, 0, 0, 0.05)",
+         
         }}
       >
         <h2
@@ -257,7 +258,7 @@ const AppDownload = () => {
             color: "gray",
           }}
         >
-          Book us for your Events
+         
         </h2>
         <button
           onClick={() => setShowForm(!showForm)}

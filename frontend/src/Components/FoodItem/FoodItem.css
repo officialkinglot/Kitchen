@@ -148,19 +148,19 @@
     }
 
     .food-item-name-rating p {
-        font-size: 14px;
+        font-size: 17px;
     }
 
     .food-item-price {
-        font-size: 14px;
+        font-size: 16px;
     }
 
     .food-item-description {
-        font-size: 13px;
+        font-size: 15px;
     }
 
     .food-item-img-container .add {
-        width: 30px; /* Slightly reduced width */
+        width: 38px; /* Slightly reduced width */
         bottom: 8px;
         right: 8px;
         padding: 4px; /* Slightly reduced padding */
@@ -170,11 +170,11 @@
         bottom: 8px;
         right: 8px;
         padding: 3px;
-        font-size: 14px;
+        font-size: 19px;
     }
 
     .food-item-counter img {
-        width: 20px;
+        width: 27px;
     }
 }
 
