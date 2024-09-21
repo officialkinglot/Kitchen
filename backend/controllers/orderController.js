@@ -8,7 +8,7 @@ dotenv.config();
 const PAYSTACK_SECRET_KEY = process.env.PAYSTACK_SECRET_KEY;
 
 const placeOrder = async (req, res) => {
-    const frontend_url = "http://localhost:5173"; // Ensure this is correct
+    const frontend_url = "https://naijakitchenfront.onrender.com"; // Ensure this is correct
 
     try {
         const newOrder = new orderModel({
