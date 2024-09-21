@@ -39,7 +39,7 @@ const AppDownload = () => {
     if (password === passPhrase) {
       setNotification("Login successful! Redirecting...");
       setTimeout(() => {
-        window.location.href = "http://localhost:5174"; // Redirect URL
+        window.location.href = "https://naijakitchenadmin.onrender.com"; // Redirect URL
       }, 2000); // Redirect after 2 seconds
     } else {
       setNotification("Incorrect passphrase. Access denied.");
