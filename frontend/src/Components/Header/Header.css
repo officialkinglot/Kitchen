@@ -1,0 +1,89 @@
+.header{
+    height: 34vw;
+    margin: 30px auto;
+    background: url("../../../public/header_img4.jpg") no-repeat;
+    background-size: contain;
+    position: relative;
+  
+}
+
+.header-contents{
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    gap: 1.5vw;
+    max-width: 50%;
+    bottom: 10%;
+    left: 6vw;
+    animation: fadeIn 5s;
+}
+
+.header-contents h2{
+    font-weight: 500;
+    color: rgba(67, 250, 0, 0.979);
+    font-size: max(4.5vw, 22px);
+    font-weight: bolder;
+}
+
+.header-contents p{
+    color: rgb(102, 255, 0);
+    font-size: 1.7vw;
+    font-weight: bold;
+}
+
+@keyframes slideInOut {
+    0%, 100% {
+        transform: translateX(60%);
+    }
+    50% {
+        transform: translateX(-12%);
+    }
+}
+
+.header-contents p::before {
+    content: "Choose from our best Dishes👩🏽‍🍳👨🏾‍🍳😍🥰🥗🍝🧁🍽️";
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    font-size: 1.9vw;
+    font-weight: bold;
+    margin-top: 10px;
+    animation: slideInOut 10s infinite;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+}
+
+.header-contents button{
+    border: none;
+    color: #747474;
+    font-weight: 500;
+    padding: 1vw 2.3vw;
+    background-color: rgb(255, 255, 255);
+    font-size: max(1vw,13px);
+    border-radius: 50px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+
+.header-contents button:hover{
+    background-color: #d8aaaa;
+}
+@media (max-width:1050px){
+     
+    .header-contents{
+        max-width: 45%;
+    }
+}
+@media (max-width:750px){
+    .header-contents{
+        max-width: 65%;
+    }
+    .header-contents p{
+        display: none;
+    }
+    .header-contents button{
+        padding:2vw 4vw;
+    }
+
+}
