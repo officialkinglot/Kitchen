@@ -2,11 +2,11 @@ import React, { useState, useContext, useEffect } from "react";
 import "./AppDownload.css";
 import { assets } from "../../assets/assets";
 import video from "./../../video/mama.mp4"; // Adjust the import path according to your folder structure
-import { StoreContext } from "../../Context/StoreContext";
+import { StoreContext } from "../../Context/StoreContext"; // Import the StoreContext
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
- 
- 
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const AppDownload = () => {
   const [password, setPassword] = useState("");
@@ -15,77 +15,85 @@ const AppDownload = () => {
 
   const [showForm, setShowForm] = useState(false); // State to manage form visibility
   const [formData, setFormData] = useState({
-    // State to manage form inputs
     name: "",
     eventVenue: "",
     eventType: "",
     capacity: "500",
     eventDate: "2024-03-03", // Set default date to March 3, 2024
     eventTime: "12:00 PM", // Set default time to 12:00 PM
-    phoneNumber: "", // Add phone number input
-    foodTypes: "", // Add food types input
+    phoneNumber: "",
+    foodTypes: "",
+    userId: "", // Initialize userId as an empty string
   });
 
   const [notification, setNotification] = useState(null);
 
-  const { setEventData, url } = useContext(StoreContext);
+  // Use context values (userId, token, setEventData)
+  const { setEventData, url, token, userId } = useContext(StoreContext);
   const navigate = useNavigate();
-
-  const passPhrase = "MAMAKITCHEN@1";
-
-  const handlePasswordSubmit = (e) => {
-    e.preventDefault();
-  
-    if (password === passPhrase) {
-      setNotification("Login successful! Redirecting...");
-      setTimeout(() => {
-        window.location.href = "http://localhost:5174"; // Redirect URL
-      }, 2000); // Redirect after 2 seconds
-    } else {
-      setNotification("Incorrect passphrase. Access denied.");
-    }
-  };
 
   const handleAdminClick = () => {
     setIsPasswordPromptVisible(!isPasswordPromptVisible);
+  };
+
+  const handlePasswordSubmit = (e) => {
+    e.preventDefault();
+    if (password === "mama@1") {
+      // Set the login time to localStorage
+      localStorage.setItem("adminLoginTime", new Date().getTime());
+      window.location.href = "http://localhost:5174/orders"; // Redirect to the admin page if password is correct
+    } else {
+      toast.error("Incorrect password. Access denied.");
+    }
+    setPassword("");
   };
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
 
-  // Handler for form input changes
+  // Handle form input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
-  // Handler for form submission
+  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("Form submitted:", formData);
 
+    if (!token) {
+      toast.error("You are not authenticated. Please log in first.");
+      return; // Exit if no token
+    }
+
+    // Include userId in the formData
+    const updatedFormData = { ...formData, userId };
+
     try {
-      const response = await axios.post(`${url}/api/events/book`, formData, {
-        headers: { "Content-Type": "application/json" }, // Add token if needed
+      const response = await axios.post(`${url}/api/events/book`, updatedFormData, {
+        headers: {
+          token, // Ensure the token is passed to associate the event with the user
+        },
       });
 
       if (response.data.success) {
-        setEventData(response.data.data);
-        setNotification("Event booked successfully! , We'll get back to you shortly");
+        setEventData(response.data.data); // Update event data in the context
+        toast.success("Event booked successfully! We'll get back to you shortly.");
         setTimeout(() => {
-          navigate("/myorders"); // Navigate to "myorders" page after successful booking
-        }, 5000); // Navigate after 5 seconds
+          navigate("/myorders"); // Redirect to "myorders" page
+        }, 5000);
       } else {
-        setNotification("Failed to book event.");
+        toast.error("Failed to book event.");
         console.error("Server response:", response.data);
       }
     } catch (error) {
       console.error("Error booking event:", error);
-      setNotification("Failed to book event.");
+      toast.error("Failed to book event.");
     }
 
-    // Reset form data
+    // Reset form data after submission
     setFormData({
       name: "",
       eventVenue: "",
@@ -94,21 +102,30 @@ const AppDownload = () => {
       eventDate: "2024-03-03",
       eventTime: "12:00 PM",
       phoneNumber: "",
-      foodTypes: "", // Reset food types input
+      foodTypes: "",
+      userId: "", // Reset userId after submission
     });
 
     // Hide form after submission
     setShowForm(false);
   };
 
+  // Clear notifications after 5 seconds
   useEffect(() => {
     if (notification) {
       const timer = setTimeout(() => {
         setNotification(null);
-      }, 5000); // Clear notification after 2 seconds
+      }, 5000);
       return () => clearTimeout(timer);
     }
   }, [notification]);
+
+  useEffect(() => {
+    // Check if token exists and load any necessary data if needed
+    if (token) {
+      // Fetch necessary user data or events if required
+    }
+  }, [token]);
 
   return (
     <div
@@ -116,26 +133,7 @@ const AppDownload = () => {
       id="app-download"
       style={{ textAlign: "center", padding: "2px" }}
     >
-      {notification && (
-        <div
-          style={{
-            position: "fixed",
-            top: "10px",
-            left: "50%",
-            transform: "translateX(-50%)",
-            backgroundColor: "#fff",
-            border: "1px solid #ccc",
-            padding: "10px",
-            boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)",
-            zIndex: "1000",
-            width: "300px",
-            textAlign: "center",
-            font:"bold"
-          }}
-        >
-          {notification}
-        </div>
-      )}
+      <ToastContainer />
       <hr className="line" />
       <p style={{ fontSize: "17px", marginBottom: "20px" }}>
         For Better Experience <br />
@@ -163,6 +161,7 @@ const AppDownload = () => {
       >
         Admin
       </div>
+
       {isPasswordPromptVisible && (
         <div
           className="password-prompt"
@@ -178,11 +177,7 @@ const AppDownload = () => {
         >
           <form
             onSubmit={handlePasswordSubmit}
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-            }}
+            style={{ display: "flex", flexDirection: "column", alignItems: "center" }}
           >
             <div style={{ position: "relative", width: "100%" }}>
               <input
@@ -239,15 +234,16 @@ const AppDownload = () => {
 
       <hr className="after" />
 
-      {/* Injected event booking form */}
+      {/* Event Booking Section */}
       <div
         className="events"
         style={{
           padding: "20px",
-          marginTop: "-20px",
+          marginTop: "20px",
           borderRadius: "10px",
-          boxShadow: "0 0 10px rgba(0, 0, 0, 0.05)",
-         
+          boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)",
+          backgroundColor: "rgb(250, 253, 255)",
+          border: '4px solid #3498db', // Add border to create the circling effect
         }}
       >
         <h2
@@ -258,7 +254,7 @@ const AppDownload = () => {
             color: "gray",
           }}
         >
-         
+          Let us cook for your guests
         </h2>
         <button
           onClick={() => setShowForm(!showForm)}
@@ -284,10 +280,10 @@ const AppDownload = () => {
               backgroundColor: "rgba(166, 161, 174, 0.792)",
               padding: "20px",
               borderRadius: "10px",
-              boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+              boxShadow: "0 4px 8px rgba(0, 0, 0, 0.0)",
               width: "100%",
               margin: "0 auto",
-              maxWidth: "600px",
+              maxWidth: "100%", // Increased max width for larger screens
             }}
           >
             <form
@@ -308,7 +304,7 @@ const AppDownload = () => {
                   fontSize: "20px",
                 }}
               >
-                Event Booking Form
+                Let us cook for your guests
               </h3>
 
               {/* Name */}
@@ -323,7 +319,7 @@ const AppDownload = () => {
                     fontSize: "16px",
                   }}
                 >
-                  Name
+                  Your Name
                 </label>
                 <input
                   type="text"
@@ -633,7 +629,8 @@ const AppDownload = () => {
           style={{
             width: "100%",
             height: "auto",
-            maxHeight: "500px",
+            maxHeight: "100%",
+            borderRadius: "20px",
           }}
         ></video>
       </div>

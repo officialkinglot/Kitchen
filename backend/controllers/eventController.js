@@ -1,11 +1,14 @@
- import Event from "../models/eventModel.js"; // Import the Event model
+import Event from "../models/eventModel.js"; // Import the Event model
 import { sendAdminNotification } from "../controllers/orderController.js"; // Import the function to send admin notifications
 
-// API endpoint to book an event
+// API endpoint to book an event 
 const bookEvent = async (req, res) => {
-  try {
+  try {  
     const { name, eventVenue, eventType, capacity, eventDate, eventTime, phoneNumber, foodTypes } = req.body;
-    const newEvent = new Event({ name, eventVenue, eventType, capacity, eventDate, eventTime, phoneNumber, foodTypes });
+    const newEvent = new Event({
+      name, eventVenue, eventType, capacity, eventDate, eventTime, phoneNumber, foodTypes,
+      userId: req.body.userId // Assign the userId from the authenticated user
+    });
     await newEvent.save();
 
     // Send SSE to admin
@@ -17,10 +20,24 @@ const bookEvent = async (req, res) => {
   }
 };
 
-// API endpoint to list all events
+// API endpoint to list all events for the admin
 const listEvents = async (req, res) => {
   try {
-    const events = await Event.find();
+    // Fetch all events and populate the user details (assuming you have a User model)
+    const events = await Event.find().populate('userId', 'name email'); // Populates user 'name' and 'email'
+
+    res.status(200).json({ success: true, data: events });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+};
+
+
+// API endpoint to list events booked by a logged-in user
+const listUserEvents = async (req, res) => {
+  try {
+    const userId = req.body.userId; // Get userId from the request body
+    const events = await Event.find({ userId });
     res.status(200).json({ success: true, data: events });
   } catch (error) {
     res.status(500).json({ success: false, error: error.message });
@@ -50,4 +67,4 @@ const updateEventStatus = async (req, res) => {
   }
 };
 
-export { bookEvent, listEvents, removeEvent, updateEventStatus };
+export { bookEvent, listEvents, listUserEvents, removeEvent, updateEventStatus };

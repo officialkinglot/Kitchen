@@ -19,9 +19,12 @@
     display: grid;
     grid-template-columns: 2fr 1fr 1fr;
     gap: 80px;
-    opacity: 90;
+    opacity: 9;
     animation: fadeIn 1s ease-in-out forwards;
+    color: chartreuse;
 }
+
+
 
 @keyframes fadeIn {
     from {
@@ -50,22 +53,8 @@
     margin-bottom: 10px;
     cursor: pointer;
     transition: color 0.3s;
-    animation: moveItems 5s infinite;
     font-size: 16px; /* Increase font size for better visibility */
     color: #ffffff; /* Bright white color */
-    text-shadow: 0 0 5px rgba(0, 0, 0, 0.5); /* Add text shadow for contrast */
-}
-
-@keyframes moveItems {
-    0% {
-        transform: translateX(0);
-    }
-    50% {
-        transform: translateX(10px);
-    }
-    100% {
-        transform: translateX(0);
-    }
 }
 
 .footer-content-left li:hover,
@@ -78,7 +67,6 @@
 .footer-content-center h2 {
     color: white;
     font-size: 20px; /* Increase font size for better visibility */
-    text-shadow: 0 0 5px rgba(0, 0, 0, 0.5); /* Add text shadow for contrast */
 }
 
 .footer-social-icons img {
@@ -86,19 +74,6 @@
     margin-right: 15px;
     cursor: pointer;
     transition: transform 0.3s, background-color 0.3s;
-    animation: moveIcons 5s infinite;
-}
-
-@keyframes moveIcons {
-    0% {
-        transform: translateY(0);
-    }
-    50% {
-        transform: translateY(-10px);
-    }
-    100% {
-        transform: translateY(0);
-    }
 }
 
 .footer-social-icons img:hover {
@@ -123,7 +98,6 @@
     animation: fadeIn 1s ease-in-out forwards 1s;
     font-size: 14px; /* Increase font size for better visibility */
     color: #ffffff; /* Bright white color */
-    text-shadow: 0 0 5px rgba(0, 0, 0, 0.5); /* Add text shadow for contrast */
 }
 
 /* Hover Animation for Links */

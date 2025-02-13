@@ -6,11 +6,12 @@ const eventSchema = new mongoose.Schema({
   eventType: { type: String, required: true },
   capacity: { type: String, required: true },
   eventDate: { type: String, required: true },
-  status:{type:String,default:"Pending"},
   eventTime: { type: String, required: true },
   phoneNumber: { type: String, required: true },
-  foodTypes: { type: String, required: true}
-}, { timestamps: true });
+  foodTypes: { type: String, required: true },
+  status: { type: String, default: "Pending" }, // Status of the event (e.g. Pending, Confirmed, etc.)
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true }, // Link event to a user
+}, { timestamps: true }); // Timestamps for creation and updates
 
 const Event = mongoose.model("Event", eventSchema);
 

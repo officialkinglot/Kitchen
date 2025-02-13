@@ -10,11 +10,9 @@ const List = ({ url }) => {
     try {
       const response = await axios.get(`${url}/api/food/list`);
       if (response.data.success) {
-        // Sort list by creation date and time in descending order
         const sortedList = response.data.data.sort(
           (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
         );
-        console.log("Sorted List:", sortedList); // Debugging line
         setList(sortedList);
       } else {
         toast.error("Error fetching food list");
@@ -37,6 +35,24 @@ const List = ({ url }) => {
       }
     } catch (error) {
       toast.error("Error removing food item");
+      console.error("Error removing food item:", error);
+    }
+  };
+
+  const updateAvailability = async (foodId, isAvailable) => {
+    try {
+      const response = await axios.post(`${url}/api/food/updateAvailability`, {
+        id: foodId,
+        isAvailable: isAvailable,
+      });
+      await fetchList();
+      if (response.data.success) {
+        toast.success("Food item availability updated successfully");
+      } else {
+        toast.error("Error updating food item availability");
+      }
+    } catch (error) {
+      toast.error("Error updating food item availability");
     }
   };
 
@@ -49,8 +65,7 @@ const List = ({ url }) => {
 
   useEffect(() => {
     fetchList();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [url]);
 
   return (
     <div className="list add flex col">
@@ -61,14 +76,37 @@ const List = ({ url }) => {
           <b>Name</b>
           <b>Category</b>
           <b>Price</b>
-          <b>Remove</b>
+          <b>Availability</b>
+          <b>Delete</b>
         </div>
         {list.map((item, index) => (
           <div key={index} className="list-table-format p">
-            <img src={`${url}/images/${item.image}`} alt={item.name} />
+            <img src={item.image.startsWith("https://i.ibb.co/") ? item.image : `${url}/images/${item.image}`} alt={item.name} />
             <p>{item.name}</p>
             <p style={{ cursor: 'pointer', color: 'black' }}>{item.category}</p>
             <p style={{ cursor: 'pointer', color: 'blue' }}>{formatCurrency(item.price)}</p>
+            <div className="availability-checkboxes">
+              <label>
+                <input
+                  type="radio"
+                  name={`availability-${item._id}`}
+                  value="true"
+                  checked={item.isAvailable}
+                  onChange={() => updateAvailability(item._id, true)}
+                />
+                Available
+              </label>
+              <label>
+                <input
+                  type="radio"
+                  name={`availability-${item._id}`}
+                  value="false"
+                  checked={!item.isAvailable}
+                  onChange={() => updateAvailability(item._id, false)}
+                />
+                Not Available
+              </label>
+            </div>
             <p onClick={() => removeFood(item._id)} style={{ cursor: 'pointer', color: 'green' }}>X</p>
           </div>
         ))}

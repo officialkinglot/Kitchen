@@ -1,11 +1,16 @@
+ /* Wrapper class for Dispatch Menu to scope styles */
 .order-add {
-  background: linear-gradient(135deg, #825b5b 0%, #e0e0e0 100%);
+  background: linear-gradient(135deg, #5b6e82 0%, #e0e0e0 100%);
   padding: 20px;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 1s ease-in-out forwards;
 }
 
 .item-item,
 .item-price {
   font-size: 16px;
+  color: blue;
 }
 
 .order-item, .event-item {
@@ -23,11 +28,9 @@
   background-color: #fafafa;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.order-item:hover, .event-item:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  opacity: 0;
+  transform: translateX(-50px);
+  animation: slideIn 1s ease-in-out forwards;
 }
 
 .order-item-food,
@@ -67,10 +70,13 @@
   font-size: 14px;
   border-radius: 10px;
   cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .order-item select:hover, .eventselector:hover {
   color: rgb(16, 2, 97);
+  background-color: #ffd6d6;
 }
 
 .order-item-food2 {
@@ -98,12 +104,14 @@
 
 .delete-button {
   background-color: #ff4d4d;
-  color: white;
+  color: rgb(255, 255, 255);
   border: none;
   border-radius: 5px;
   padding: 8px 12px;
   cursor: pointer;
   font-weight: bold;
+  transition: background-color 0.3s ease;
+  margin-left: auto; /* Move the button to the right */
 }
 
 .delete-button:hover {
@@ -124,6 +132,20 @@
 }
 
 /* Media queries for responsiveness */
+
+/* For large tablets and small desktops (max-width: 1024px) */
+@media (max-width: 1024px) {
+  .order-item, .event-item {
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    font-size: 13px;
+    padding: 12px;
+  }
+
+  .order-item select, .eventselector {
+    font-size: 13px;
+    padding: 7px;
+  }
+}
 
 /* For tablets and smaller screens (max-width: 768px) */
 @media (max-width: 768px) {
@@ -193,8 +215,119 @@
   }
 }
 
+/* For very small mobile devices (max-width: 320px) */
+@media (max-width: 320px) {
+  .eventselector {
+    width: 100%;
+    padding: 4px;
+    font-size: 8px;
+  }
+
+  .order-item, .event-item {
+    display: flex;
+    flex-direction: column;
+    font-size: 8px;
+    padding: 6px;
+  }
+
+  .order-item select, .eventselector {
+    font-size: 8px;
+    padding: 4px;
+  }
+
+  .order-item img {
+    width: 20px;
+    margin-bottom: 6px;
+  }
+
+  .order-item-food2 {
+    grid-template-columns: repeat(auto-fill, minmax(30px, 1fr));
+    gap: 3px;
+  }
+
+  .order-add {
+    margin-left: 5px;
+  }
+}
+
 /* General container styling */
 .order-list {
   display: grid;
   gap: 20px;
+}
+
+/* Keyframes for animations */
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideIn {
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* New orders and total orders styling */
+.order-summary {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.order-summary p {
+  margin: 0;
+  padding: 10px;
+  background-color: #fafafa;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+}
+
+.order-summary p:first-child {
+  background-color: #ffe8e4;
+  color: #b848c3;
+}
+
+.order-summary p:last-child {
+  background-color: #e0e0e0;
+  color: #5b6e82;
+}
+
+/* Responsive styles for new orders and total orders */
+@media (max-width: 1024px) {
+  .order-summary {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .order-summary p {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+@media (max-width: 768px) {
+  .order-summary p {
+    font-size: 16px;
+    padding: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .order-summary p {
+    font-size: 14px;
+    padding: 6px;
+  }
+}
+
+@media (max-width: 320px) {
+  .order-summary p {
+    font-size: 12px;
+    padding: 4px;
+  }
 }

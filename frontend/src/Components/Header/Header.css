@@ -1,13 +1,18 @@
-.header{
+ /* Header Container */
+.header {
     height: 34vw;
     margin: 30px auto;
-    background: url("../../../public/header_img4.jpg") no-repeat;
-    background-size: contain;
+    background: url("../../../public/grilled-chicken-breast-with-broccoli.jpg") no-repeat center center;
+    background-size: cover;
     position: relative;
-  
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    animation: fadeIn 2s ease-in-out;
 }
 
-.header-contents{
+/* Header Contents */
+.header-contents {
     position: absolute;
     display: flex;
     flex-direction: column;
@@ -16,74 +21,201 @@
     max-width: 50%;
     bottom: 10%;
     left: 6vw;
-    animation: fadeIn 5s;
+    animation: slideIn 1s ease-in-out;
 }
 
-.header-contents h2{
-    font-weight: 500;
+/* Header Title */
+.header-contents h2 {
+    font-weight: 800;
     color: rgba(67, 250, 0, 0.979);
-    font-size: max(4.5vw, 22px);
-    font-weight: bolder;
+    font-size: max(4.5vw, 28px);
+    text-shadow: 2px 4px 6px rgba(0, 0, 0, 0.4);
+    animation: fadeInUp 2s ease-in-out;
+    margin-bottom: 100px;
 }
 
-.header-contents p{
+/* Typing Effect */
+.typing-effect {
+    border-right: 2px solid;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+/* Header Paragraph */
+.header-contents p {
     color: rgb(102, 255, 0);
     font-size: 1.7vw;
     font-weight: bold;
+    animation: fadeInUp 2.5s ease-in-out;
 }
 
+/* Animation for Sliding Text */
 @keyframes slideInOut {
     0%, 100% {
-        transform: translateX(60%);
+        transform: translateX(100%);
     }
     50% {
-        transform: translateX(-12%);
+        transform: translateX(0);
     }
 }
 
+/* Sliding Text */
 .header-contents p::before {
-    content: "Choose from our best Dishes👩🏽‍🍳👨🏾‍🍳😍🥰🥗🍝🧁🍽️";
+    content: "Choose from our best Dishes 👩🏽‍🍳👨🏾‍🍳😍🥰🥗🍝🧁🍽️";
     display: block;
     white-space: nowrap;
     overflow: hidden;
     font-size: 1.9vw;
     font-weight: bold;
     margin-top: 10px;
-    animation: slideInOut 10s infinite;
-    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    animation: slideInOut 8s infinite ease-in-out;
+    font-family: 'Arial Narrow Bold', sans-serif;
 }
 
-.header-contents button{
+/* Button Styling */
+.header-contents button {
     border: none;
-    color: #747474;
-    font-weight: 500;
+    color: #fff;
+    font-weight: 600;
     padding: 1vw 2.3vw;
-    background-color: rgb(255, 255, 255);
-    font-size: max(1vw,13px);
+    background-color: rgb(67, 160, 71);
+    font-size: max(1.1vw, 14px);
     border-radius: 50px;
-    font-weight: bold;
     cursor: pointer;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    animation: fadeInUp 3s ease-in-out, colorChange 6s infinite;
 }
 
+/* Color Changing Animation */
+@keyframes colorChange {
+    0% {
+        background-color: rgb(67, 160, 71); /* Green */
+    }
+    16% {
+        background-color: rgb(255, 99, 71); /* Red */
+    }
+    32% {
+        background-color: rgb(0, 123, 255); /* Blue */
+    }
+    48% {
+        background-color: rgb(255, 235, 59); /* Yellow */
+    }
+    64% {
+        background-color: rgb(156, 39, 176); /* Purple */
+    }
+    80% {
+        background-color: rgb(255, 165, 0); /* Orange */
+    }
+    100% {
+        background-color: rgb(67, 160, 71); /* Back to Green */
+    }
+}
 
-.header-contents button:hover{
-    background-color: #d8aaaa;
+/* Button Hover Effect */
+.header-contents button:hover {
+    background-color: #4caf50;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
 }
-@media (max-width:1050px){
-     
-    .header-contents{
-        max-width: 45%;
+
+/* Fade In Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
     }
 }
-@media (max-width:750px){
-    .header-contents{
-        max-width: 65%;
+
+/* Slide In Animation */
+@keyframes slideIn {
+    from {
+        transform: translateX(-100%);
     }
-    .header-contents p{
+    to {
+        transform: translateX(0);
+    }
+}
+
+/* Fade In Up Animation */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Media Queries for Responsive Design */
+@media (max-width: 1050px) {
+    .header-contents {
+        max-width: 60%;
+    }
+
+    .header-contents h2 {
+        font-size: max(4vw, 24px);
+    }
+
+    .header-contents p {
+        font-size: 1.5vw;
+    }
+}
+
+@media (max-width: 750px) {
+    .header-contents {
+        max-width: 75%;
+        left: 4vw;
+    }
+
+    .header-contents p {
         display: none;
     }
-    .header-contents button{
-        padding:2vw 4vw;
+
+    .header-contents button {
+        padding: 2vw 4vw;
+        font-size: max(1.5vw, 13px);
+    }
+}
+
+@media (max-width: 500px) {
+    .header {
+        height: 50vw;
     }
 
+    .header-contents {
+        max-width: 85%;
+        bottom: 8%;
+    }
+
+    .header-contents h2 {
+        font-size: max(5vw, 20px);
+    }
+
+    .header-contents button {
+        padding: 3vw 5vw;
+        font-size: max(2vw, 12px);
+    }
+}
+
+/* Header Title */
+.header-contents h2 {
+    font-weight: 800;
+    color: rgba(67, 250, 0, 0.979);
+    font-size: max(4.5vw, 28px);
+    text-shadow: 2px 4px 6px rgba(0, 0, 0, 0.4);
+    overflow: hidden; /* Ensures no positional movement */
+    white-space: nowrap; /* Prevents wrapping */
+    border-right: 3px solid rgba(67, 250, 0, 0.979); /* Typing cursor effect */
+    animation: blink 0.5s step-end infinite;
+}
+
+/* Typing Effect Animation */
+@keyframes blink {
+    50% {
+        border-color: transparent;
+    }
 }

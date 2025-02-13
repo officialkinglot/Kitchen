@@ -1,15 +1,16 @@
 import mongoose from "mongoose";
 
 const foodSchema = new mongoose.Schema({
-    name:{type:String, required:true},
-    description: {type:String, required:true},
-    price:{type:Number,required:true},
-    image:{type:String, required:true},
-    category:{type:String, required:true},
-})
+  name: { type: String, required: true },
+  description: { type: String, required: true },
+  price: { type: Number, required: true },
+  image: { type: String, required: true },
+  category: { type: String, required: true },
+  isAvailable: { type: Boolean, default: true } // Add availability field
+}, {
+  timestamps: true // Automatically add createdAt and updatedAt fields
+});
 
+const foodModel = mongoose.model("Food", foodSchema);
 
-const foodmodel = mongoose.model.food || mongoose.model("food",foodSchema)
-
-
-export default foodmodel;
+export default foodModel;

@@ -1,17 +1,15 @@
-// eslint-disable-next-line no-unused-vars
 import React, { useState } from "react";
 import "./ResetPassword.css";
 import axios from "axios";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
-// eslint-disable-next-line react/prop-types
 const ResetPassword = ({ setShowLogin }) => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [message, setMessage] = useState("");
   const [searchParams] = useSearchParams();
-  const [showPassword, setShowPassword] = useState(false); // State to toggle password visibility
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false); // State to toggle confirm password visibility
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const navigate = useNavigate();
   const token = searchParams.get("token");
 
@@ -25,7 +23,9 @@ const ResetPassword = ({ setShowLogin }) => {
 
     try {
       const response = await axios.post(
-        `${import.meta.env.VITE_REACT_APP_BACKEND_URL}/api/user/reset-password`,{ token, password });
+        `${import.meta.env.VITE_REACT_APP_BACKEND_URL}/api/user/reset-password`,
+        { token, password }
+      );
       if (response.data.success) {
         setMessage("Password has been reset successfully, You can now Login.");
         setTimeout(() => {

@@ -2,13 +2,13 @@ import React, { useContext, useEffect, useState } from "react";
 import "./PlaceOrder.css";
 import { StoreContext } from "../../Context/StoreContext";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
+import { url } from "../../../../admin/src/App"; // Correct import statement
 
 const PlaceOrder = () => {
-  const { getTotalCartAmount, token, food_list, cartItems, url } =
-    useContext(StoreContext);
+  const { getTotalCartAmount, token, food_list, cartItems } = useContext(StoreContext);
   const navigate = useNavigate();
-
+  const location = useLocation();
   const [data, setData] = useState({
     firstName: "",
     lastName: "",
@@ -18,11 +18,44 @@ const PlaceOrder = () => {
     state: "",
     phone: "",
   });
+  const [deliveryFee, setDeliveryFee] = useState(2000); // Default delivery fee
+  const [discount, setDiscount] = useState(0);
+
+  useEffect(() => {
+    const fetchDeliveryFee = async () => {
+      try {
+        const response = await axios.get(`${url}/api/admin/delivery-fee`);
+        setDeliveryFee(response.data.deliveryFee);
+      } catch (error) {
+        console.error('Error fetching delivery fee:', error);
+      }
+    };
+    fetchDeliveryFee();
+  }, []);
+
+  // Load data from localStorage on component mount
+  useEffect(() => {
+    const savedData = localStorage.getItem("orderData");
+    if (savedData) {
+      setData(JSON.parse(savedData));
+    }
+  }, []);
+
+  // Load discount from location state
+  useEffect(() => {
+    if (location.state && location.state.discount) {
+      setDiscount(location.state.discount);
+    }
+  }, [location]);
 
   const onChangeHandler = (event) => {
     const name = event.target.name;
     const value = event.target.value;
-    setData((data) => ({ ...data, [name]: value }));
+
+    // Update state and save to localStorage
+    const newData = { ...data, [name]: value };
+    setData(newData);
+    localStorage.setItem("orderData", JSON.stringify(newData));
   };
 
   const placeOrder = async (event) => {
@@ -40,7 +73,7 @@ const PlaceOrder = () => {
       userId: token, // Assuming token contains the user ID
       address: data,
       items: orderItems,
-      amount: getTotalCartAmount() + 2000, // Assuming 1000 is the delivery fee
+      amount: getTotalCartAmount() + deliveryFee - (getTotalCartAmount() * (discount / 100)), // Use the dynamic delivery fee and discount
       email: data.email, // Add email to orderData
     };
 
@@ -50,9 +83,14 @@ const PlaceOrder = () => {
       });
       if (response.data.success) {
         const { session_url } = response.data;
+
+        // Clear localStorage after order is placed
+        localStorage.removeItem("orderData");
+
+        // Redirect to payment session
         window.location.replace(session_url);
       } else {
-        alert("Error");
+        alert("Error placing order");
       }
     } catch (error) {
       console.error("Error placing order:", error);
@@ -65,6 +103,12 @@ const PlaceOrder = () => {
       navigate("/cart");
     }
   }, [token, getTotalCartAmount, navigate]);
+
+  const getTotalWithDiscount = () => {
+    const total = getTotalCartAmount();
+    const discountAmount = (total * discount) / 100;
+    return total + deliveryFee - discountAmount;
+  };
 
   return (
     <form onSubmit={placeOrder} className="place-order">
@@ -136,7 +180,7 @@ const PlaceOrder = () => {
           <h2>Cart Totals</h2>
           <div>
             <div className="cart-total-details">
-              <p>Sub Totals</p>
+              <p>Sub Total</p>
               <p>
                 {getTotalCartAmount().toLocaleString("en-NG", {
                   style: "currency",
@@ -150,7 +194,7 @@ const PlaceOrder = () => {
             <div className="cart-total-details">
               <p>Delivery Fee</p>
               <p>
-                {(getTotalCartAmount() === 0 ? 0 : 2000).toLocaleString(
+                {(getTotalCartAmount() === 0 ? 0 : deliveryFee).toLocaleString(
                   "en-NG",
                   {
                     style: "currency",
@@ -163,12 +207,21 @@ const PlaceOrder = () => {
             </div>
             <hr />
             <div className="cart-total-details">
+              <p>Discount</p>
+              <p>
+                {(getTotalCartAmount() * (discount / 100)).toLocaleString("en-NG", {
+                  style: "currency",
+                  currency: "NGN",
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                })}
+              </p>
+            </div>
+            <hr />
+            <div className="cart-total-details">
               <b>Total</b>
               <b>
-                {(getTotalCartAmount() === 0
-                  ? 0
-                  : getTotalCartAmount() + 2000
-                ).toLocaleString("en-NG", {
+                {getTotalWithDiscount().toLocaleString("en-NG", {
                   style: "currency",
                   currency: "NGN",
                   minimumFractionDigits: 2,

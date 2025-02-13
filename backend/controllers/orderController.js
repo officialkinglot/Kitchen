@@ -7,10 +7,12 @@ dotenv.config();
 
 const PAYSTACK_SECRET_KEY = process.env.PAYSTACK_SECRET_KEY;
 
+// API for placing a new order and initializing payment
 const placeOrder = async (req, res) => {
     const frontend_url = "http://localhost:5173"; // Ensure this is correct
 
     try {
+        // Create a new order but don't clear the cart yet
         const newOrder = new orderModel({
             userId: req.body.userId,
             items: req.body.items,
@@ -19,11 +21,9 @@ const placeOrder = async (req, res) => {
         });
         await newOrder.save();
 
-        await userModel.findOneAndUpdate({ _id: req.body.userId }, { cartData: {} });
-
         const line_items = req.body.items.map(item => ({
             name: item.name,
-            price: item.price * 100,  // Convert to kobo
+            price: item.price * 100,  // Convert to kobo (currency in the smallest unit)
             quantity: item.quantity
         }));
 
@@ -36,38 +36,46 @@ const placeOrder = async (req, res) => {
                 user_id: req.body.userId
             },
             callback_url: `${frontend_url}/verify?orderId=${newOrder._id}&success=true`,
-            success_url: `${frontend_url}/myorders`,
             cancel_url: `${frontend_url}/verify?success=false&orderId=${newOrder._id}`,
         };
 
         const response = await axios.post('https://api.paystack.co/transaction/initialize', data, {
             headers: {
-                Authorization: `Bearer ${PAYSTACK_SECRET_KEY}`
+                Authorization:`Bearer ${PAYSTACK_SECRET_KEY}`
             }
         });
 
+        // Respond with the session URL for the frontend to redirect to Paystack
         res.json({ success: true, session_url: response.data.data.authorization_url });
     } catch (error) {
         console.log({ success: false, message: "Server Error", error: error.message });
-        res.json({ success: false, message: "Server Error" });
+        res.status(500).json({ success: false, message: "Server Error" });
     }
 };
 
+// API for verifying the payment
 const verifyOrder = async (req, res) => {
     const { orderId, success } = req.body;
     try {
         if (success === 'true') {
+            // Update the order to mark it as paid
             await orderModel.findByIdAndUpdate(orderId, { payment: true });
+
+            // Clear the user's cart now that payment is successful
+            const order = await orderModel.findById(orderId);
+            await userModel.findOneAndUpdate({ _id: order.userId }, { cartData: {} });
+
             res.json({ success: true, message: "Paid Successfully" });
         } else {
+            // Delete the order if payment failed
             await orderModel.findByIdAndDelete(orderId);
-            res.json({ success: false, message: "Not Paid" });
+            res.json({ success: false, message: "Payment failed or canceled" });
         }
     } catch (error) {
         console.log(error);
-        res.json({ success: false, message: "Error" });
+        res.status(500).json({ success: false, message: "Error verifying payment" });
     }
-}
+};
 
 // User orders for frontend
 const userOrders = async (req, res) => {
@@ -76,9 +84,9 @@ const userOrders = async (req, res) => {
         res.json({ success: true, data: orders });
     } catch (error) {
         console.log(error);
-        res.json({ success: false, message: "Errors" });
+        res.json({ success: false, message: "Error retrieving orders" });
     }
-}
+};
 
 // Listing Orders for admin panel/customer's orders
 const listOrders = async (req, res) => {
@@ -87,20 +95,40 @@ const listOrders = async (req, res) => {
         res.json({ success: true, data: orders });
     } catch (error) {
         console.log(error);
-        res.json({ success: false, message: "Error" });
+        res.json({ success: false, message: "Error listing orders" });
     }
-}
+};
 
-// API for updating order status.
+// API for updating order status
 const updateStatus = async (req, res) => {
+    const { orderId, status, dispatcher } = req.body;
+
     try {
-        await orderModel.findByIdAndUpdate(req.body.orderId, { status: req.body.status });
-        res.json({ success: true, message: "Order Status Updated" });
+        const order = await orderModel.findById(orderId);
+        if (!order) {
+            return res.status(404).json({ success: false, message: 'Order not found' });
+        }
+
+        // Save the current status and time if it's being updated
+        if (status === 'Out For Delivery🚚' && !order.pickupTime) {
+            order.pickupTime = new Date();
+        }
+        if (status === 'Delivered✅' && !order.deliveryTime) {
+            order.deliveryTime = new Date();
+        }
+
+        order.status = status;
+        if (status === 'Out For Delivery🚚') {
+            order.dispatcher = dispatcher;
+        }
+
+        await order.save();
+        res.json({ success: true, message: 'Order status updated' });
     } catch (error) {
         console.log(error);
-        res.json({ success: false, message: "Error" });
+        res.json({ success: false, message: "Error updating order status" });
     }
-}
+};
 
 // API for removing an order
 const removeOrder = async (req, res) => {

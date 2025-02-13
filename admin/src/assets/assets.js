@@ -62,6 +62,19 @@ import profile_icon from './profile_icon.png'
 import bag_icon from './bag_icon.png'
 import logout_icon from './logout_icon.png'
 import parcel_icon from './parcel_icon.png'
+import truckicon from './truckicon.png'
+import cashondel from './cash-on-delivery.png'
+import icons8 from './icons8.png'
+import icons9 from './icons8-cash.png'
+import icons10 from './icons8-shopping.png'
+import icons11 from './icons8-list.png'
+import delivered from './delivered.png'
+import pending from './pending.png'
+import workers from './workers.png'
+import events from './icons8-events.png'
+import hall from './hall.png'
+import price from './price.png'
+import promo from './icons8-promo.gif'
 
 export const assets = {
     logo,
@@ -85,7 +98,20 @@ export const assets = {
     parcel_icon,
     order_icon,
     lists,
-    uploadicon
+    uploadicon,
+    truckicon,
+    cashondel,
+    icons8,
+    icons9,
+    icons10,
+    icons11,
+    delivered,
+    pending,
+    workers,
+    events,
+    hall,
+    price,
+    promo
 }
 
 export const menu_list = [

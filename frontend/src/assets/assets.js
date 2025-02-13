@@ -107,7 +107,7 @@ export const menu_list = [
         menu_image: menu_5
     },
     {
-        menu_name: "Pepper Soup",
+        menu_name:"PepperSoup",
         menu_image: menu_6
     },
     {

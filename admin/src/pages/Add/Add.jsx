@@ -1,4 +1,3 @@
-// eslint-disable-next-line no-unused-vars
 import React, { useState } from "react";
 import "./Add.css";
 import { assets } from "../../assets/assets";
@@ -13,7 +12,9 @@ const Add = () => {
     description: "",
     price: "",
     category: "Swallow",
+    isAvailable: true,
   });
+  const [loading, setLoading] = useState(false); // New state for loading
 
   const onChangeHandler = (event) => {
     const { name, value } = event.target;
@@ -21,7 +22,7 @@ const Add = () => {
   };
 
   const formatCurrency = (amount) => {
-    return new Intl.NumberFormat('en-NG', { style: 'currency', currency: 'NGN' }).format(amount);
+    return new Intl.NumberFormat("en-NG", { style: "currency", currency: "NGN" }).format(amount);
   };
 
   const parseCurrency = (formattedAmount) => {
@@ -30,23 +31,27 @@ const Add = () => {
 
   const onSubmitHandler = async (event) => {
     event.preventDefault();
+    setLoading(true); // Start loading
     const formData = new FormData();
     formData.append("name", data.name);
     formData.append("description", data.description);
-    formData.append("price", parseCurrency(data.price)); // Convert formatted price to number before submission
+    formData.append("price", parseCurrency(data.price));
     formData.append("category", data.category);
+    formData.append("isAvailable", data.isAvailable);
     formData.append("image", image);
 
     try {
       const response = await axios.post(`${url}/api/food/add`, formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
+      setLoading(false); // Stop loading
       if (response.data.success) {
         setData({
           name: "",
           description: "",
           price: "",
           category: "Swallow",
+          isAvailable: true,
         });
         setImage(null);
         toast.success(response.data.message);
@@ -54,7 +59,9 @@ const Add = () => {
         toast.error(response.data.message);
       }
     } catch (error) {
+      setLoading(false); // Stop loading
       toast.error("An error occurred while adding the food item.");
+      console.error("Error adding food item:", error);
     }
   };
 
@@ -108,6 +115,7 @@ const Add = () => {
               name="category"
               required
             >
+              {/* Options */}
               <option value="Swallow">Swallow</option>
               <option value="Rice">Rice</option>
               <option value="Meat/Fish">Meat/Fish</option>
@@ -126,15 +134,32 @@ const Add = () => {
               type="text"
               name="price"
               placeholder="e.g 1000"
-              onBlur={(e) => setData({...data, price: formatCurrency(parseCurrency(e.target.value))})}
+              onBlur={(e) => setData({ ...data, price: formatCurrency(parseCurrency(e.target.value)) })}
               required
             />
           </div>
+          <div className="add-availability flex-col">
+            <h4>Availability</h4>
+            <select
+              onChange={onChangeHandler}
+              value={data.isAvailable}
+              name="isAvailable"
+              required
+            >
+              <option value={true}>Available</option>
+              <option value={false}>Unavailable</option>
+            </select>
+          </div>
         </div>
-        <button type="submit" className="add-button">
-          Add
+        <button type="submit" className="add-button" disabled={loading}>
+          {loading ? "Uploading..." : "Add"}
         </button>
       </form>
+      {loading && (
+        <div className="loading-overlay">
+          <div className="spinner"></div>
+        </div>
+      )}
     </div>
   );
 };

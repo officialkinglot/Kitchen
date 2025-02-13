@@ -20,7 +20,7 @@ const Footer = () => {
             <img src={assets.bag_icon} alt="Authentic Naija Logo" />
           </Link>
           <p>
-            Authentic Naija brings you the best of Nigeria's traditional
+            Fidian Cakes & More brings you the best of Nigeria's richest
             delicacies right to your doorstep. Our meals are made with fresh,
             locally-sourced ingredients, offering you an authentic taste of
             Naija cuisine. Whether you crave jollof, pounded yam, or suya, we

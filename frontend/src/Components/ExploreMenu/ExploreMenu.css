@@ -25,12 +25,14 @@
 
 .explore-menu-text {
     max-width: 60%;
-    color: #808080;
+    color: #03626c;
     margin: 0 auto;
-    font-size: 1.2em;
+    font-size: 1.2em; 
     animation: fadeIn 2s ease-in-out, moveSlightly 4s ease-in-out infinite; /* Constant movement */
     line-height: 1.5;
+    font-weight: bold;
     opacity: 0.9;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 
 .explore-menu-text:hover {
@@ -46,6 +48,8 @@
     margin: 20px 0px;
     overflow-x: scroll;
     animation: scaleUp 1s ease-in-out;
+ 
+    
 }
 
 .explore-menu-list::-webkit-scrollbar {
@@ -67,7 +71,7 @@
 
 .explore-menu-list-item p {
     margin-top: 10px;
-    color: #747474;
+    color: #be7500;
     font-size: max(1.4vw, 16px);
     cursor: pointer;
     animation: fadeInScale 1.2s ease-in-out;
@@ -80,7 +84,7 @@
 
 .explore-menu hr {
     margin: 10px 0px;
-    height: 3px; /* Increased thickness */
+    height: 2.3px; /* Increased thickness */
     background-color: #2e2ec4;
     border: none;
     animation: drawLine 2s ease-in-out;
@@ -205,6 +209,14 @@
         font-size: 12px;
     }
 
+    .explore-menu hr {
+        margin: 10px 0px;
+        height: 2.5px; /* Increased thickness */
+        background-color: #2e2ec4;
+        border: none;
+        animation: drawLine 2s ease-in-out;
+    }
+
     .explore-menu-list {
         gap: 15px;
         padding: 0 10px;
@@ -217,6 +229,8 @@
 
     .explore-menu-list-item p {
         font-size: 14px;
+        color: #466302;
+        font-weight: bold;
     }
 }
 
