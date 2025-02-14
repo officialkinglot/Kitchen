@@ -1,8 +1,16 @@
+<<<<<<< HEAD
  /* Header Container */
 .header {
     height: 34vw;
     margin: 30px auto;
     background: url("../../../public/grilled-chicken-breast-with-broccoli.jpg") no-repeat center center;
+=======
+  /* Header Container */
+.header {
+    height: 34vw;
+    margin: 30px auto;
+    background: url("../../../public/header_img4.jpg") no-repeat center center;
+>>>>>>> d196b0ff42b382bd9dd2547ed43a77a6c5045bf0
     background-size: cover;
     position: relative;
     border-radius: 15px;
@@ -31,6 +39,7 @@
     font-size: max(4.5vw, 28px);
     text-shadow: 2px 4px 6px rgba(0, 0, 0, 0.4);
     animation: fadeInUp 2s ease-in-out;
+<<<<<<< HEAD
     margin-bottom: 100px;
 }
 
@@ -41,6 +50,10 @@
     overflow: hidden;
 }
 
+=======
+}
+
+>>>>>>> d196b0ff42b382bd9dd2547ed43a77a6c5045bf0
 /* Header Paragraph */
 .header-contents p {
     color: rgb(102, 255, 0);
@@ -200,6 +213,7 @@
         font-size: max(2vw, 12px);
     }
 }
+<<<<<<< HEAD
 
 /* Header Title */
 .header-contents h2 {
@@ -219,3 +233,5 @@
         border-color: transparent;
     }
 }
+=======
+>>>>>>> d196b0ff42b382bd9dd2547ed43a77a6c5045bf0

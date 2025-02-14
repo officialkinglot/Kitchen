@@ -11,7 +11,7 @@ const StoreContextProvider = (props) => {
   const [food_list, setFoodList] = useState([]);
   const [notification, setNotification] = useState(null);
 
-  const url = "http://localhost:4000";
+  const url = "https://naijakitchen.onrender.com";
 
   const showNotification = (message, type, autoClose = 3000) => {
     setNotification({ message, type, autoClose });

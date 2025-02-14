@@ -32,6 +32,24 @@ const AppDownload = () => {
   const { setEventData, url, token, userId } = useContext(StoreContext);
   const navigate = useNavigate();
 
+<<<<<<< HEAD
+=======
+  const passPhrase = "MAMAKITCHEN@1";
+
+  const handlePasswordSubmit = (e) => {
+    e.preventDefault();
+  
+    if (password === passPhrase) {
+      setNotification("Login successful! Redirecting...");
+      setTimeout(() => {
+        window.location.href = "https://naijakitchenadmin.onrender.com"; // Redirect URL
+      }, 2000); // Redirect after 2 seconds
+    } else {
+      setNotification("Incorrect passphrase. Access denied.");
+    }
+  };
+
+>>>>>>> d196b0ff42b382bd9dd2547ed43a77a6c5045bf0
   const handleAdminClick = () => {
     setIsPasswordPromptVisible(!isPasswordPromptVisible);
   };

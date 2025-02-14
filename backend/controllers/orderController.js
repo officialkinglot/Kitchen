@@ -9,7 +9,7 @@ const PAYSTACK_SECRET_KEY = process.env.PAYSTACK_SECRET_KEY;
 
 // API for placing a new order and initializing payment
 const placeOrder = async (req, res) => {
-    const frontend_url = "http://localhost:5173"; // Ensure this is correct
+    const frontend_url = "https://naijakitchenfront.onrender.com"; // Ensure this is correct
 
     try {
         // Create a new order but don't clear the cart yet

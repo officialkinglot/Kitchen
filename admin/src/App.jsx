@@ -27,6 +27,7 @@ import PromoCodes from "./pages/PromoCodes/PromoCodes"; // Import the PromoCodes
 export const url = "http://localhost:4000";
 
 const App = () => {
+<<<<<<< HEAD
   const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(false);
   const [isDispatchLoggedIn, setIsDispatchLoggedIn] = useState(false);
   const [adminName, setAdminName] = useState("");
@@ -116,6 +117,9 @@ const App = () => {
     }
   };
 
+=======
+  const url = "https://naijakitchen.onrender.com";
+>>>>>>> d196b0ff42b382bd9dd2547ed43a77a6c5045bf0
   return (
     <div>
       {!isAdminLoggedIn && !isDispatchLoggedIn ? (
