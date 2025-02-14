@@ -2,7 +2,7 @@
 .header {
     height: 34vw;
     margin: 30px auto;
-    background: url("../../../public/header_img4.jpg") no-repeat center center;
+    background: url("../../../public/grilled-chicken-breast-with-broccoli.jpg") no-repeat center center;
     background-size: cover;
     position: relative;
     border-radius: 15px;
@@ -19,7 +19,7 @@
     align-items: start;
     gap: 1.5vw;
     max-width: 50%;
-    bottom: 10%;
+    bottom: 10%; /* Original bottom value */
     left: 6vw;
     animation: slideIn 1s ease-in-out;
 }
@@ -28,13 +28,16 @@
 .header-contents h2 {
     font-weight: 800;
     color: rgba(67, 250, 0, 0.979);
-    font-size: max(4.5vw, 28px);
+    font-size: clamp(2rem, 4vw, 3rem); /* Responsive font size */
     text-shadow: 2px 4px 6px rgba(0, 0, 0, 0.4);
-    animation: fadeInUp 2s ease-in-out;
     overflow: hidden; /* Ensures no positional movement */
     white-space: nowrap; /* Prevents wrapping */
     border-right: 3px solid rgba(67, 250, 0, 0.979); /* Typing cursor effect */
-    animation: blink 0.5s step-end infinite;
+    animation: fadeInUp 2s ease-in-out, blink 0.5s step-end infinite;
+    text-overflow: ellipsis; /* Adds ellipsis if text overflows */
+    margin-bottom: 20px; /* Adjust margin for better spacing */
+    position: relative; /* Ensure positioning is relative */
+    top: -45px; /* Shift down slightly */
 }
 
 /* Typing Effect Animation */
@@ -44,12 +47,23 @@
     }
 }
 
+/* Typing Effect */
+.typing-effect {
+    border-right: 2px solid;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; /* Ensures text doesn't overflow */
+}
+
 /* Header Paragraph */
 .header-contents p {
     color: rgb(102, 255, 0);
-    font-size: 1.7vw;
+    font-size: clamp(1rem, 2vw, 1.5rem); /* Responsive font size */
     font-weight: bold;
     animation: fadeInUp 2.5s ease-in-out;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 /* Animation for Sliding Text */
@@ -68,7 +82,7 @@
     display: block;
     white-space: nowrap;
     overflow: hidden;
-    font-size: 1.9vw;
+    font-size: clamp(1rem, 2vw, 1.5rem); /* Responsive font size */
     font-weight: bold;
     margin-top: 10px;
     animation: slideInOut 8s infinite ease-in-out;
@@ -80,9 +94,9 @@
     border: none;
     color: #fff;
     font-weight: 600;
-    padding: 1vw 2.3vw;
+    padding: clamp(0.5rem, 2vw, 1rem) clamp(1rem, 3vw, 2rem); /* Responsive padding */
     background-color: rgb(67, 160, 71);
-    font-size: max(1.1vw, 14px);
+    font-size: clamp(0.8rem, 2vw, 1.2rem); /* Responsive font size */
     border-radius: 50px;
     cursor: pointer;
     transition: background-color 0.3s ease, box-shadow 0.3s ease;
@@ -154,17 +168,45 @@
 }
 
 /* Media Queries for Responsive Design */
+@media (max-width: 1200px) {
+    .header-contents {
+        max-width: 55%;
+    }
+
+    .header-contents h2 {
+        font-size: clamp(1.8rem, 4vw, 2.8rem);
+    }
+
+    .header-contents p {
+        font-size: clamp(1rem, 2vw, 1.4rem);
+    }
+}
+
 @media (max-width: 1050px) {
     .header-contents {
         max-width: 60%;
     }
 
     .header-contents h2 {
-        font-size: max(4vw, 24px);
+        font-size: clamp(1.6rem, 4vw, 2.6rem);
     }
 
     .header-contents p {
-        font-size: 1.5vw;
+        font-size: clamp(0.9rem, 2vw, 1.3rem);
+    }
+}
+
+@media (max-width: 900px) {
+    .header-contents {
+        max-width: 65%;
+    }
+
+    .header-contents h2 {
+        font-size: clamp(1.4rem, 4vw, 2.4rem);
+    }
+
+    .header-contents p {
+        font-size: clamp(0.8rem, 2vw, 1.2rem);
     }
 }
 
@@ -179,27 +221,67 @@
     }
 
     .header-contents button {
-        padding: 2vw 4vw;
-        font-size: max(1.5vw, 13px);
+        padding: clamp(0.4rem, 2vw, 0.9rem) clamp(0.9rem, 3vw, 1.8rem);
+        font-size: clamp(0.7rem, 2vw, 1.1rem);
+    }
+}
+
+@media (max-width: 600px) {
+    .header {
+        height: 40vw;
+    }
+
+    .header-contents {
+        max-width: 80%;
+        bottom: 10%; /* Original bottom value */
+    }
+
+    .header-contents h2 {
+        font-size: clamp(1.2rem, 4vw, 2.2rem);
+    }
+
+    .header-contents button {
+        padding: clamp(0.3rem, 2vw, 0.8rem) clamp(0.8rem, 3vw, 1.6rem);
+        font-size: clamp(0.6rem, 2vw, 1rem);
     }
 }
 
 @media (max-width: 500px) {
     .header {
-        height: 50vw;
+        height: 45vw;
     }
 
     .header-contents {
         max-width: 85%;
-        bottom: 8%;
+        bottom: 10%; /* Original bottom value */
     }
 
     .header-contents h2 {
-        font-size: max(5vw, 20px);
+        font-size: clamp(1rem, 4vw, 2rem);
     }
 
     .header-contents button {
-        padding: 3vw 5vw;
-        font-size: max(2vw, 12px);
+        padding: clamp(0.2rem, 2vw, 0.7rem) clamp(0.7rem, 3vw, 1.4rem);
+        font-size: clamp(0.5rem, 2vw, 0.9rem);
+    }
+}
+
+@media (max-width: 400px) {
+    .header {
+        height: 50vw;
+    }
+
+    .header-contents {
+        max-width: 90%;
+        bottom: 10%; /* Original bottom value */
+    }
+
+    .header-contents h2 {
+        font-size: clamp(0.8rem, 4vw, 1.8rem);
+    }
+
+    .header-contents button {
+        padding: clamp(0.1rem, 2vw, 0.6rem) clamp(0.6rem, 3vw, 1.2rem);
+        font-size: clamp(0.4rem, 2vw, 0.8rem);
     }
 }

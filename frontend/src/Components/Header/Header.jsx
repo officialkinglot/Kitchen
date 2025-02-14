@@ -5,9 +5,9 @@ const Header = () => {
   const fullText = "Fidian Chops...The Best";
   const [displayText, setDisplayText] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
-  const typingSpeed = 450; // Typing speed
+  const typingSpeed = 150; // Typing speed
   const deletingSpeed = 50; // Deleting speed
-  const delay = 9000000; // Delay before restarting
+  const delay = 2000; // Delay before restarting
 
   useEffect(() => {
     let timer;
@@ -48,7 +48,8 @@ const Header = () => {
     <div className="header">
       <div className="header-contents">
         <h2 className="typing-effect">
-          {displayText}</h2>
+          {displayText}
+        </h2>
         <p></p>
         <a href="#explore-menu">
           <button>Enter Menu</button>
