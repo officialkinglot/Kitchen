@@ -8,7 +8,7 @@ import PlaceOrder from "./Pages/PlaceOrder/PlaceOrder";
 import Footer from "./Components/Footer/Footer";
 import LoginPopUp from "./Components/LoginPopUp/LoginPopUp";
 import Verify from "./Pages/Verify/Verify";
-import MyOrders from "./Pages/MyOrders/MyOrders";
+import MyOrders from "./Pages/MyOrders/Myorders.jsx";
 import BookHall from "./Pages/Hall/Hall"; // Adjust the import path as needed
 import StoreContextProvider from "./Context/StoreContext"; // Adjust the import path as needed
 import VerifyHallBooking from "./Pages/VerifyHallBooking/VerifyHallBooking";
