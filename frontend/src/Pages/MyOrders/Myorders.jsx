@@ -4,7 +4,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { StoreContext } from '../../Context/StoreContext';
 import moment from 'moment-timezone';
-import './MyOrders.css';
+import './Myorders.css';
 import { assets } from '../../assets/assets';
 
 const formatDateTime = (dateTimeString) => {

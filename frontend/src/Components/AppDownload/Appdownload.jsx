@@ -32,13 +32,11 @@ const AppDownload = () => {
   const { setEventData, url, token, userId } = useContext(StoreContext);
   const navigate = useNavigate();
 
-<<<<<<< HEAD
-=======
   const passPhrase = "MAMAKITCHEN@1";
 
   const handlePasswordSubmit = (e) => {
     e.preventDefault();
-  
+
     if (password === passPhrase) {
       setNotification("Login successful! Redirecting...");
       setTimeout(() => {
@@ -49,21 +47,8 @@ const AppDownload = () => {
     }
   };
 
->>>>>>> d196b0ff42b382bd9dd2547ed43a77a6c5045bf0
   const handleAdminClick = () => {
     setIsPasswordPromptVisible(!isPasswordPromptVisible);
-  };
-
-  const handlePasswordSubmit = (e) => {
-    e.preventDefault();
-    if (password === "mama@1") {
-      // Set the login time to localStorage
-      localStorage.setItem("adminLoginTime", new Date().getTime());
-      window.location.href = "http://localhost:5174/orders"; // Redirect to the admin page if password is correct
-    } else {
-      toast.error("Incorrect password. Access denied.");
-    }
-    setPassword("");
   };
 
   const togglePasswordVisibility = () => {
